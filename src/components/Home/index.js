@@ -13,24 +13,32 @@ import { useParams } from "react-router-dom";
 
 const Home = () => {
   const dispatcher = useDispatch();
-  const { id } = useParams();
-  const params = useParams();
-  console.log("ooo", params);
+  let { id, '*': lpath } = useParams();
 
   const [openCreateNewModal, setOpenCreateNewModal] = useState(false);
-  const currentSliceData = useSelector((store) => store.currentFolder);
+
+
 
   const handleCreateNewModal = () => {
     setOpenCreateNewModal(true);
   };
+
+  //Check if lpath is empty or not 
+  //if empty then pass the id 
+  //else pass the lpath last route
+  console.log(lpath)
+
   const handleAddItem = (value, name) => {
     if (value === "File") {
       dispatcher(addFileItem({ name, id }));
     } else {
-      dispatcher(addFolderItem({ name, id }));
+      dispatcher(addFolderItem({ name, id, lpath }));
     }
     dispatcher(addFileFolderName({ name, id }));
   };
+
+
+
 
   return (
     <div className="p-100">
@@ -40,7 +48,7 @@ const Home = () => {
         onSubmit={handleAddItem}
       />
       <div className="d-flex">
-        <FileAndFolderCards data={currentSliceData?.folders[id]} />
+        <FileAndFolderCards />
 
         <Image
           onClick={handleCreateNewModal}
