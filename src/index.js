@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { RouterProvider, createBrowserRouter } from "react-router-dom";
+import {
+  RouterProvider,
+  createBrowserRouter,
+  useParams,
+} from "react-router-dom";
 import reportWebVitals from "./reportWebVitals";
 import { Provider } from "react-redux";
 import appStore from "./utils/appstore";
@@ -10,6 +14,11 @@ import "./styles/index.scss";
 const router = createBrowserRouter([
   {
     path: "/",
+    element: <Home />,
+    errorElement: <div>page</div>,
+  },
+  {
+    path: "/:id/*",
     element: <Home />,
     errorElement: <div>page</div>,
   },

@@ -11,6 +11,12 @@
 .p-100{
     padding:100px;
 }
+.px-20{
+    padding: 0 20px !important;
+}
+.color-red{
+    color: red !important;
+}
 .text-center{
     text-align: center;
 }
@@ -34,4 +40,13 @@
 }
 .align-center{
     align-items: center;
+}
+.contextMenuMainContainer{
+    position: absolute;
+   height: 100px;
+   width: 100px;
+   background-color: red;
+   z-index: 1;
+   border-radius: 20px;
+   padding: 20px;
 }

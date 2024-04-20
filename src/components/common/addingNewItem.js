@@ -1,14 +1,21 @@
 import { Button, Col, Input, Modal, Radio, Row } from "antd";
 import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { useParams } from "react-router-dom";
 
 const AddingNewItemModal = ({
   openCreateNewModal,
   setOpenCreateNewModal,
   onSubmit,
 }) => {
+  const { id } = useParams();
   const [inputValue, setInputValue] = useState("");
+
   const plainOptions = ["File", "Folder"];
   const [value, setValue] = useState("File");
+  const currentSliceData = useSelector((store) =>
+    id ? store.currentFolder.folders[id] : store.currentFolder
+  );
 
   const handleCreate = () => {
     onSubmit(value, inputValue);
@@ -35,6 +42,7 @@ const AddingNewItemModal = ({
           type="primary"
           className="w-100"
           onClick={handleCreate}
+          disabled={currentSliceData?.names.includes(inputValue) ? true : false}
         >
           Create
         </Button>,
@@ -53,10 +61,14 @@ const AddingNewItemModal = ({
           />
         </Col>
         <Input
+          status={currentSliceData?.names.includes(inputValue) ? "error" : null}
           value={inputValue}
           placeholder={`Enter ${value} name`}
           onChange={(e) => setInputValue(e.target.value)}
         />
+        {currentSliceData?.names.includes(inputValue) ? (
+          <p className="color-red">File/Folder name already exists!</p>
+        ) : null}
       </Row>
     </Modal>
   );

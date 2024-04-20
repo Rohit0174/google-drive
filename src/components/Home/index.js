@@ -1,26 +1,35 @@
 import { useState } from "react";
 import AddingNewItemModal from "../common/addingNewItem";
-import { Image } from "antd";
+import { Image, message } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
-import { addFileItem, addFolderItem } from "../../utils/currentFolderSlice";
+import {
+  addFileFolderName,
+  addFileItem,
+  addFolderItem,
+} from "../../utils/currentFolderSlice";
+import FileAndFolderCards from "./fileAndFolderCards";
+import { useParams } from "react-router-dom";
 
 const Home = () => {
   const dispatcher = useDispatch();
-  const [openCreateNewModal, setOpenCreateNewModal] = useState(false);
+  const { id } = useParams();
+  const params = useParams();
+  console.log("ooo", params);
 
+  const [openCreateNewModal, setOpenCreateNewModal] = useState(false);
   const currentSliceData = useSelector((store) => store.currentFolder);
-  // console.log("selector", currentSliceData);
 
   const handleCreateNewModal = () => {
     setOpenCreateNewModal(true);
   };
   const handleAddItem = (value, name) => {
     if (value === "File") {
-      dispatcher(addFileItem(name));
+      dispatcher(addFileItem({ name, id }));
     } else {
-      dispatcher(addFolderItem(name));
+      dispatcher(addFolderItem({ name, id }));
     }
+    dispatcher(addFileFolderName({ name, id }));
   };
 
   return (
@@ -31,19 +40,8 @@ const Home = () => {
         onSubmit={handleAddItem}
       />
       <div className="d-flex">
-        {currentSliceData?.files?.map((item) => {
-          return (
-            <div>
-              <Image
-                preview={false}
-                height={100}
-                width={100}
-                src="/Assets/icons/file.png"
-              />
-              <p className="text-center">{item}</p>
-            </div>
-          );
-        })}
+        <FileAndFolderCards data={currentSliceData?.folders[id]} />
+
         <Image
           onClick={handleCreateNewModal}
           className="cursor_pointer"
