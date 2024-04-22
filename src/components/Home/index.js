@@ -10,38 +10,34 @@ import {
 } from "../../utils/currentFolderSlice";
 import FileAndFolderCards from "./fileAndFolderCards";
 import { useParams } from "react-router-dom";
+import BreadCrumb from "../common/BreadCrumb";
 
 const Home = () => {
   const dispatcher = useDispatch();
-  let { id, '*': lpath } = useParams();
+  let { id, "*": lpath } = useParams();
 
   const [openCreateNewModal, setOpenCreateNewModal] = useState(false);
-
-
 
   const handleCreateNewModal = () => {
     setOpenCreateNewModal(true);
   };
 
-  //Check if lpath is empty or not 
-  //if empty then pass the id 
+  //Check if lpath is empty or not
+  //if empty then pass the id
   //else pass the lpath last route
-  console.log(lpath)
 
   const handleAddItem = (value, name) => {
     if (value === "File") {
-      dispatcher(addFileItem({ name, id }));
+      dispatcher(addFileItem({ name, id, lpath }));
     } else {
       dispatcher(addFolderItem({ name, id, lpath }));
     }
-    dispatcher(addFileFolderName({ name, id }));
+    dispatcher(addFileFolderName({ name, id, lpath }));
   };
-
-
-
 
   return (
     <div className="p-100">
+      <BreadCrumb />
       <AddingNewItemModal
         openCreateNewModal={openCreateNewModal}
         setOpenCreateNewModal={setOpenCreateNewModal}

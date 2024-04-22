@@ -2,19 +2,22 @@ import { Image } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
+import ContextMenuSection from "../common/ContextMenuSection.js";
 
 const FileAndFolderCards = () => {
-  const { id, '*': lpath } = useParams();
+  const { id, "*": lpath } = useParams();
+  const [left, setLeft] = useState(null);
+  const [top, setTop] = useState(null);
 
   const [openContextMenu, setOpenContextMenu] = useState(false);
   let currentSliceData = useSelector((store) => store.currentFolder);
-  let data = currentSliceData?.folders[id]
+  let data = currentSliceData?.folders[id];
 
   //if lpath
   //go into all the folder till the lpath empty
   // Navigate into all the folders until lpath is empty
   if (lpath) {
-    const folderPath = lpath.split('/');
+    const folderPath = lpath.split("/");
     for (const folderName of folderPath) {
       if (data?.folders[folderName]) {
         data = data.folders[folderName];
@@ -28,9 +31,6 @@ const FileAndFolderCards = () => {
 
   currentSliceData = data ? data : currentSliceData;
 
-
-
-
   const navigate = useNavigate();
 
   const handleFolderClick = (item) => {
@@ -43,12 +43,25 @@ const FileAndFolderCards = () => {
       }
     }
   };
+  const handleContextMenu = (e) => {
+    e.preventDefault();
+    console.log("eee", e.clientX, e.clientY);
+    setLeft(e.clientX + 20);
+    setTop(e.clientY + 20);
+    setOpenContextMenu(true);
+  };
   return (
-    <div className="d-flex">
-      {openContextMenu}
+    <div className="d-flex" onClick={() => setLeft(null)}>
+      {openContextMenu && <ContextMenuSection left={left} top={top} />}
       {currentSliceData?.files?.map((item, index) => {
         return (
-          <div className="px-20" key={index}>
+          <div
+            className="px-20"
+            key={index}
+            onContextMenu={(e) => {
+              handleContextMenu(e);
+            }}
+          >
             <Image
               preview={false}
               height={100}
@@ -66,8 +79,7 @@ const FileAndFolderCards = () => {
             key={index}
             onClick={() => handleFolderClick(folder)}
             onContextMenu={(e) => {
-              e.preventDefault();
-              setOpenContextMenu(true);
+              handleContextMenu(e);
             }}
           >
             <Image

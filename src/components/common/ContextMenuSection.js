@@ -1,7 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 
-const ContextMenuSection = ({ openContextMenu, setOpenContextMenu }) => {
-  return <div className="contextMenuMainContainer">dsd</div>;
+const ContextMenuSection = ({ left, top }) => {
+  if (!left) return;
+
+  return (
+    <>
+      <div style={{ left, top }} className="contextMenuMainContainer">
+        <div>Edit</div>
+        <div>Delete</div>
+      </div>
+    </>
+  );
 };
 
 export default ContextMenuSection;
