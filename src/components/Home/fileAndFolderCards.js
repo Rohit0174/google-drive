@@ -69,6 +69,7 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
           selectedFolder={selectedFolder}
           openEditModal={openEditModal}
           setEditModal={setEditModal}
+          type={type}
         />
       )}
 

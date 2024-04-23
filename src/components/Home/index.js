@@ -3,11 +3,7 @@ import AddingNewItemModal from "../common/addingNewItem";
 import { Image, message } from "antd";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  addFileFolderName,
-  addFileItem,
-  addFolderItem,
-} from "../../utils/currentFolderSlice";
+import { addFileItem, addFolderItem } from "../../utils/currentFolderSlice";
 import FileAndFolderCards from "./fileAndFolderCards";
 import { useParams } from "react-router-dom";
 import BreadCrumb from "../common/BreadCrumb";
@@ -34,7 +30,6 @@ const Home = () => {
     } else {
       dispatcher(addFolderItem({ name, id, lpath }));
     }
-    dispatcher(addFileFolderName({ name, id, lpath }));
   };
 
   return (

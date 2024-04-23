@@ -10,7 +10,6 @@ const EditNameModal = ({
   selectedFolder,
   type,
 }) => {
-  console.log("ppppp", selectedFolder, type);
   const { id, "*": lpath } = useParams();
   const dispatcher = useDispatch();
 
@@ -30,7 +29,7 @@ const EditNameModal = ({
     }
     setEditModal(false);
   };
-  console.log("editModal", openEditModal, selectedFolder);
+
   return (
     <Modal
       open={openEditModal}

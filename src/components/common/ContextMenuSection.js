@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import {
+  deleteFile,
   deleteFolderName,
   editFoderName,
 } from "../../utils/currentFolderSlice";
@@ -14,6 +15,7 @@ const ContextMenuSection = ({
   selectedFolder,
   openEditModal,
   setEditModal,
+  type,
 }) => {
   const { id, "*": lpath } = useParams();
 
@@ -23,7 +25,9 @@ const ContextMenuSection = ({
     if (type === "edit") {
       setEditModal(true);
     } else {
-      dispatcher(deleteFolderName({ id, lpath, oName: selectedFolder }));
+      if (type === "folder")
+        dispatcher(deleteFolderName({ id, lpath, oName: selectedFolder }));
+      else dispatcher(deleteFile({ id, lpath, oName: selectedFolder }));
     }
   };
 

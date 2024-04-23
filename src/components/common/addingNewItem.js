@@ -16,7 +16,9 @@ const AddingNewItemModal = ({
   const currentSliceData = useSelector((store) =>
     id ? store.currentFolder.folders[id] : store.currentFolder
   );
-
+  const checkName = (name) => {
+    console.log("name", name, currentSliceData);
+  };
   const handleCreate = () => {
     onSubmit(value, inputValue);
     setInputValue("");
@@ -25,6 +27,10 @@ const AddingNewItemModal = ({
 
   const handleCancel = () => {
     setOpenCreateNewModal(false);
+  };
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+    checkName(e.target.value);
   };
 
   const onChange = ({ target: { value } }) => {
@@ -42,7 +48,10 @@ const AddingNewItemModal = ({
           type="primary"
           className="w-100"
           onClick={handleCreate}
-          disabled={currentSliceData?.names.includes(inputValue) ? true : false}
+          disabled={
+            currentSliceData.folders?.hasOwnProperty(inputValue) ||
+            currentSliceData.files.includes(inputValue)
+          }
         >
           Create
         </Button>,
@@ -61,12 +70,18 @@ const AddingNewItemModal = ({
           />
         </Col>
         <Input
-          status={currentSliceData?.names.includes(inputValue) ? "error" : null}
+          status={
+            currentSliceData.folders?.hasOwnProperty(inputValue) ||
+            currentSliceData.files.includes(inputValue)
+              ? "error"
+              : null
+          }
           value={inputValue}
           placeholder={`Enter ${value} name`}
-          onChange={(e) => setInputValue(e.target.value)}
+          onChange={(e) => handleInputChange(e)}
         />
-        {currentSliceData?.names.includes(inputValue) ? (
+        {currentSliceData.folders?.hasOwnProperty(inputValue) ||
+        currentSliceData.files.includes(inputValue) ? (
           <p className="color-red">File/Folder name already exists!</p>
         ) : null}
       </Row>

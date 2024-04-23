@@ -77,40 +77,7 @@ const currentFolderSlice = createSlice({
         }
       }
     },
-    addFileFolderName: (state, action) => {
-      const { name, id, lpath } = action.payload;
-      if (!id) {
-        state.names.push(name);
-      } else {
-        if (!state.folders[id]) {
-          return;
-        }
-        if (!lpath) {
-          if (!state.folders[id].names) {
-            state.folders[id].names = [];
-          }
-          state.folders[id].names.push(name);
-        } else {
-          let currentFolder = state.folders[id];
-          const folderPath = lpath.split("/");
-          for (const folderName of folderPath) {
-            if (!currentFolder.folders[folderName]) {
-              // If the folder does not exist, create it
-              currentFolder.folders[folderName] = {
-                ...initialState,
-                folders: {},
-              };
-            }
-            currentFolder = currentFolder.folders[folderName];
-          }
-          if (!currentFolder.names) {
-            currentFolder.names = [];
-          }
 
-          currentFolder.names.push(name);
-        }
-      }
-    },
     editFoderName: (state, action) => {
       const { id, lpath, oName, nName } = action.payload;
       if (!id) {
@@ -210,7 +177,7 @@ const currentFolderSlice = createSlice({
 export const {
   addFileItem,
   addFolderItem,
-  addFileFolderName,
+
   editFoderName,
   deleteFolderName,
   editFileName,
