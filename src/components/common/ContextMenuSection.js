@@ -5,17 +5,25 @@ import {
   editFoderName,
 } from "../../utils/currentFolderSlice";
 import { useParams } from "react-router-dom";
+import EditNameModal from "./editNameModal";
 
-const ContextMenuSection = ({ left, top, dispatcher }) => {
+const ContextMenuSection = ({
+  left,
+  top,
+  dispatcher,
+  selectedFolder,
+  openEditModal,
+  setEditModal,
+}) => {
   const { id, "*": lpath } = useParams();
 
   if (!left) return;
 
   const handleActionButton = (type) => {
     if (type === "edit") {
-      dispatcher(editFoderName({ id, lpath, oName: "C", nName: "Rohit" }));
+      setEditModal(true);
     } else {
-      dispatcher(deleteFolderName({ id, lpath, oName: "C" }));
+      dispatcher(deleteFolderName({ id, lpath, oName: selectedFolder }));
     }
   };
 

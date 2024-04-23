@@ -154,6 +154,57 @@ const currentFolderSlice = createSlice({
         }
       }
     },
+    editFileName: (state, action) => {
+      const { id, lpath, oName, nName } = action.payload;
+      if (!id) {
+        state.files.push(nName);
+        // delete state.files(oName);
+        const index = state.files.indexOf(oName);
+        state.files.splice(index, 1);
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id].folders;
+          currentFolder.files.push(nName);
+          // delete currentFolder.files(oName);
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        } else {
+          let currentFolder = state.folders[id].folders;
+          const folderPath = lpath.split("/");
+          for (const folderName of folderPath) {
+            // If the folder does not exist, create it
+            currentFolder = currentFolder[folderName].folders;
+          }
+          currentFolder.files.push(nName);
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        }
+      }
+    },
+    deleteFile: (state, action) => {
+      const { id, lpath, oName, nName } = action.payload;
+      if (!id) {
+        const index = state.files.indexOf(oName);
+        state.files.splice(index, 1);
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id].folders;
+
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        } else {
+          let currentFolder = state.folders[id].folders;
+          const folderPath = lpath.split("/");
+          for (const folderName of folderPath) {
+            // If the folder does not exist, create it
+            currentFolder = currentFolder[folderName].folders;
+          }
+
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        }
+      }
+    },
   },
 });
 export const {
@@ -162,5 +213,7 @@ export const {
   addFileFolderName,
   editFoderName,
   deleteFolderName,
+  editFileName,
+  deleteFile,
 } = currentFolderSlice.actions;
 export default currentFolderSlice.reducer;

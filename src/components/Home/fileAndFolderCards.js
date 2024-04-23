@@ -3,11 +3,15 @@ import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import ContextMenuSection from "../common/ContextMenuSection.js";
+import EditNameModal from "../common/editNameModal.js";
 
 const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
   const { id, "*": lpath } = useParams();
 
   const [openContextMenu, setOpenContextMenu] = useState(false);
+  const [selectedFolder, setSelectedFolder] = useState("");
+  const [openEditModal, setEditModal] = useState(false);
+  const [type, setType] = useState("file");
   let currentSliceData = useSelector((store) => store.currentFolder);
   let data = currentSliceData?.folders[id];
 
@@ -41,25 +45,40 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
       }
     }
   };
-  const handleContextMenu = (e) => {
+  const handleContextMenu = (e, folder, type) => {
     e.preventDefault();
-    console.log("eee", e.clientX, e.clientY);
+    setType(type);
+    setSelectedFolder(folder);
     setLeft(e.clientX + 20);
     setTop(e.clientY + 20);
     setOpenContextMenu(true);
   };
   return (
     <div className="d-flex" onClick={() => setLeft(null)}>
+      <EditNameModal
+        openEditModal={openEditModal}
+        setEditModal={setEditModal}
+        selectedFolder={selectedFolder}
+        type={type}
+      />
       {openContextMenu && (
-        <ContextMenuSection left={left} top={top} dispatcher={dispatcher} />
+        <ContextMenuSection
+          left={left}
+          top={top}
+          dispatcher={dispatcher}
+          selectedFolder={selectedFolder}
+          openEditModal={openEditModal}
+          setEditModal={setEditModal}
+        />
       )}
+
       {currentSliceData?.files?.map((item, index) => {
         return (
           <div
             className="px-20"
             key={index}
             onContextMenu={(e) => {
-              handleContextMenu(e);
+              handleContextMenu(e, item, "file");
             }}
           >
             <Image
@@ -79,7 +98,7 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
             key={index}
             onClick={() => handleFolderClick(folder)}
             onContextMenu={(e) => {
-              handleContextMenu(e);
+              handleContextMenu(e, folder, "folder");
             }}
           >
             <Image
