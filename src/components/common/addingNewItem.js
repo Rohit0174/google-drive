@@ -32,7 +32,6 @@ const AddingNewItemModal = ({
     }
   }
 
-  const checkName = (name) => {};
   const handleCreate = () => {
     onSubmit(value, inputValue);
     setInputValue("");
@@ -44,7 +43,6 @@ const AddingNewItemModal = ({
   };
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
-    checkName(e.target.value);
   };
 
   const onChange = ({ target: { value } }) => {

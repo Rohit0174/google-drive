@@ -1,7 +1,7 @@
 import { Image } from "antd";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import ContextMenuSection from "../common/ContextMenuSection.js";
 import EditNameModal from "../common/editNameModal.js";
 
