@@ -111,8 +111,56 @@ const currentFolderSlice = createSlice({
         }
       }
     },
+    editFoderName: (state, action) => {
+      const { id, lpath, oName, nName } = action.payload;
+      if (!id) {
+        state.folders[nName] = state.folders[oName];
+        delete state.folders[oName];
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id].folders;
+          currentFolder[nName] = currentFolder[oName];
+          delete currentFolder[oName];
+        } else {
+          let currentFolder = state.folders[id].folders;
+          const folderPath = lpath.split("/");
+          for (const folderName of folderPath) {
+            // If the folder does not exist, create it
+            currentFolder = currentFolder[folderName].folders;
+          }
+          currentFolder[nName] = currentFolder[oName];
+          delete currentFolder[oName];
+        }
+      }
+    },
+    deleteFolderName: (state, action) => {
+      const { id, lpath, oName } = action.payload;
+      if (!id) {
+        delete state.folders[oName];
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id].folders;
+
+          delete currentFolder[oName];
+        } else {
+          let currentFolder = state.folders[id].folders;
+          const folderPath = lpath.split("/");
+          for (const folderName of folderPath) {
+            // If the folder does not exist, create it
+            currentFolder = currentFolder[folderName].folders;
+          }
+
+          delete currentFolder[oName];
+        }
+      }
+    },
   },
 });
-export const { addFileItem, addFolderItem, addFileFolderName } =
-  currentFolderSlice.actions;
+export const {
+  addFileItem,
+  addFolderItem,
+  addFileFolderName,
+  editFoderName,
+  deleteFolderName,
+} = currentFolderSlice.actions;
 export default currentFolderSlice.reducer;

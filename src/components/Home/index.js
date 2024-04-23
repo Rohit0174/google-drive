@@ -17,6 +17,8 @@ const Home = () => {
   let { id, "*": lpath } = useParams();
 
   const [openCreateNewModal, setOpenCreateNewModal] = useState(false);
+  const [left, setLeft] = useState(null);
+  const [top, setTop] = useState(null);
 
   const handleCreateNewModal = () => {
     setOpenCreateNewModal(true);
@@ -36,7 +38,7 @@ const Home = () => {
   };
 
   return (
-    <div className="p-100">
+    <div className="p-100" onClick={() => setLeft(null)}>
       <BreadCrumb />
       <AddingNewItemModal
         openCreateNewModal={openCreateNewModal}
@@ -44,7 +46,13 @@ const Home = () => {
         onSubmit={handleAddItem}
       />
       <div className="d-flex">
-        <FileAndFolderCards />
+        <FileAndFolderCards
+          left={left}
+          setLeft={setLeft}
+          top={top}
+          setTop={setTop}
+          dispatcher={dispatcher}
+        />
 
         <Image
           onClick={handleCreateNewModal}

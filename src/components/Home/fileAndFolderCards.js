@@ -4,10 +4,8 @@ import { useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import ContextMenuSection from "../common/ContextMenuSection.js";
 
-const FileAndFolderCards = () => {
+const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
   const { id, "*": lpath } = useParams();
-  const [left, setLeft] = useState(null);
-  const [top, setTop] = useState(null);
 
   const [openContextMenu, setOpenContextMenu] = useState(false);
   let currentSliceData = useSelector((store) => store.currentFolder);
@@ -52,7 +50,9 @@ const FileAndFolderCards = () => {
   };
   return (
     <div className="d-flex" onClick={() => setLeft(null)}>
-      {openContextMenu && <ContextMenuSection left={left} top={top} />}
+      {openContextMenu && (
+        <ContextMenuSection left={left} top={top} dispatcher={dispatcher} />
+      )}
       {currentSliceData?.files?.map((item, index) => {
         return (
           <div

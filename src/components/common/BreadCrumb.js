@@ -1,4 +1,3 @@
-// import { Breadcrumb } from "antd";
 import { Breadcrumb } from "antd";
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
@@ -20,7 +19,9 @@ const BreadCrumb = () => {
 
     let currentPath = "/";
     pathParts.forEach((part, index) => {
-      currentPath += `${part}/`;
+      // For the last part, exclude the trailing slash
+      const isLastPart = index === pathParts.length - 1;
+      currentPath += `${part}${isLastPart ? "" : "/"}`;
       items.push({
         title: decodeURIComponent(part),
         href: currentPath,
