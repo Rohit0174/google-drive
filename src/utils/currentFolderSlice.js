@@ -26,7 +26,8 @@ const currentFolderSlice = createSlice({
           state.folders[id].files.push(name);
         } else {
           let currentFolder = state.folders[id];
-          const folderPath = lpath.split("/");
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
             if (!currentFolder.folders[folderName]) {
               // If the folder does not exist, create it
@@ -45,6 +46,58 @@ const currentFolderSlice = createSlice({
         }
       }
     },
+    editFileName: (state, action) => {
+      const { id, lpath, oName, nName } = action.payload;
+
+      if (!id) {
+        state.files.push(nName);
+        // delete state.files(oName);
+        const index = state.files.indexOf(oName);
+        state.files.splice(index, 1);
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id];
+          currentFolder.files.push(nName);
+          // delete currentFolder.files(oName);
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        } else {
+          let currentFolder = state.folders[id];
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/");
+          for (const folderName of folderPath) {
+            currentFolder = currentFolder.folders[folderName];
+          }
+          currentFolder.files.push(nName);
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        }
+      }
+    },
+    deleteFile: (state, action) => {
+      const { id, lpath, oName, nName } = action.payload;
+
+      if (!id) {
+        const index = state.files.indexOf(oName);
+        state.files.splice(index, 1);
+      } else {
+        if (!lpath) {
+          let currentFolder = state.folders[id];
+
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        } else {
+          let currentFolder = state.folders[id];
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/");
+          for (const folderName of folderPath) {
+            currentFolder = currentFolder.folders[folderName];
+          }
+          const index = currentFolder.files.indexOf(oName);
+          currentFolder.files.splice(index, 1);
+        }
+      }
+    },
     addFolderItem: (state, action) => {
       const { name, id, lpath } = action.payload;
       if (!id) state.folders[name] = initialState;
@@ -55,7 +108,8 @@ const currentFolderSlice = createSlice({
         } else {
           let currentFolder = state.folders[id].folders;
           //A
-          const folderPath = lpath.split("/"); // Split the path to navigate through the nested folders
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/"); // Split the path to navigate through the nested folders
           //
           // V
           // HG
@@ -90,7 +144,8 @@ const currentFolderSlice = createSlice({
           delete currentFolder[oName];
         } else {
           let currentFolder = state.folders[id].folders;
-          const folderPath = lpath.split("/");
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
             // If the folder does not exist, create it
             currentFolder = currentFolder[folderName].folders;
@@ -111,64 +166,14 @@ const currentFolderSlice = createSlice({
           delete currentFolder[oName];
         } else {
           let currentFolder = state.folders[id].folders;
-          const folderPath = lpath.split("/");
+          const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+          const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
             // If the folder does not exist, create it
             currentFolder = currentFolder[folderName].folders;
           }
 
           delete currentFolder[oName];
-        }
-      }
-    },
-    editFileName: (state, action) => {
-      const { id, lpath, oName, nName } = action.payload;
-      if (!id) {
-        state.files.push(nName);
-        // delete state.files(oName);
-        const index = state.files.indexOf(oName);
-        state.files.splice(index, 1);
-      } else {
-        if (!lpath) {
-          let currentFolder = state.folders[id].folders;
-          currentFolder.files.push(nName);
-          // delete currentFolder.files(oName);
-          const index = currentFolder.files.indexOf(oName);
-          currentFolder.files.splice(index, 1);
-        } else {
-          let currentFolder = state.folders[id].folders;
-          const folderPath = lpath.split("/");
-          for (const folderName of folderPath) {
-            // If the folder does not exist, create it
-            currentFolder = currentFolder[folderName].folders;
-          }
-          currentFolder.files.push(nName);
-          const index = currentFolder.files.indexOf(oName);
-          currentFolder.files.splice(index, 1);
-        }
-      }
-    },
-    deleteFile: (state, action) => {
-      const { id, lpath, oName, nName } = action.payload;
-      if (!id) {
-        const index = state.files.indexOf(oName);
-        state.files.splice(index, 1);
-      } else {
-        if (!lpath) {
-          let currentFolder = state.folders[id].folders;
-
-          const index = currentFolder.files.indexOf(oName);
-          currentFolder.files.splice(index, 1);
-        } else {
-          let currentFolder = state.folders[id].folders;
-          const folderPath = lpath.split("/");
-          for (const folderName of folderPath) {
-            // If the folder does not exist, create it
-            currentFolder = currentFolder[folderName].folders;
-          }
-
-          const index = currentFolder.files.indexOf(oName);
-          currentFolder.files.splice(index, 1);
         }
       }
     },

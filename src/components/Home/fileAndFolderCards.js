@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import ContextMenuSection from "../common/ContextMenuSection.js";
 import EditNameModal from "../common/editNameModal.js";
 
-const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
+const FileAndFolderCards = ({ left, setLeft, top, setTop }) => {
   const { id, "*": lpath } = useParams();
 
   const [openContextMenu, setOpenContextMenu] = useState(false);
@@ -15,16 +15,15 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
   let currentSliceData = useSelector((store) => store.currentFolder);
   let data = currentSliceData?.folders[id];
 
-  //if lpath
-  //go into all the folder till the lpath empty
-  // Navigate into all the folders until lpath is empty
   if (lpath) {
-    const folderPath = lpath.split("/");
+    // Remove trailing slash if present
+    const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+    const folderPath = trimmedPath.split("/");
+
     for (const folderName of folderPath) {
       if (data?.folders[folderName]) {
         data = data.folders[folderName];
       } else {
-        // If any folder in lpath doesn't exist, break the loop
         data = null;
         break;
       }
@@ -65,7 +64,6 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop, dispatcher }) => {
         <ContextMenuSection
           left={left}
           top={top}
-          dispatcher={dispatcher}
           selectedFolder={selectedFolder}
           openEditModal={openEditModal}
           setEditModal={setEditModal}

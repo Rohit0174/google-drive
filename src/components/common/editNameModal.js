@@ -20,11 +20,21 @@ const EditNameModal = ({
   const handleCreate = () => {
     if (type === "folder") {
       dispatcher(
-        editFoderName({ id, lpath, oName: selectedFolder, nName: inputValue })
+        editFoderName({
+          id: id,
+          lpath: lpath,
+          oName: selectedFolder,
+          nName: inputValue,
+        })
       );
     } else {
       dispatcher(
-        editFileName({ id, lpath, oName: selectedFolder, nName: inputValue })
+        editFileName({
+          id: id,
+          lpath: lpath,
+          oName: selectedFolder,
+          nName: inputValue,
+        })
       );
     }
     setEditModal(false);

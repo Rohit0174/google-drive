@@ -19,9 +19,9 @@ const BreadCrumb = () => {
 
     let currentPath = "/";
     pathParts.forEach((part, index) => {
-      // For the last part, exclude the trailing slash
       const isLastPart = index === pathParts.length - 1;
-      currentPath += `${part}${isLastPart ? "" : "/"}`;
+      // Append the part with a slash if it's not the last part
+      currentPath += `${isLastPart ? part : part + "/"}`;
       items.push({
         title: decodeURIComponent(part),
         href: currentPath,

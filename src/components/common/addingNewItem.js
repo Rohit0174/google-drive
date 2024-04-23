@@ -8,17 +8,31 @@ const AddingNewItemModal = ({
   setOpenCreateNewModal,
   onSubmit,
 }) => {
-  const { id } = useParams();
+  const { id, "*": lpath } = useParams();
   const [inputValue, setInputValue] = useState("");
 
   const plainOptions = ["File", "Folder"];
   const [value, setValue] = useState("File");
-  const currentSliceData = useSelector((store) =>
+  let currentSliceData = useSelector((store) =>
     id ? store.currentFolder.folders[id] : store.currentFolder
   );
-  const checkName = (name) => {
-    console.log("name", name, currentSliceData);
-  };
+  if (lpath) {
+    // Remove trailing slash if present
+    const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
+    const folderPath = trimmedPath.split("/");
+
+    for (const folderName of folderPath) {
+      if (currentSliceData?.folders[folderName]) {
+        currentSliceData = currentSliceData.folders[folderName];
+      } else {
+        // If any folder in lpath doesn't exist, break the loop
+        currentSliceData = null;
+        break;
+      }
+    }
+  }
+
+  const checkName = (name) => {};
   const handleCreate = () => {
     onSubmit(value, inputValue);
     setInputValue("");
@@ -49,8 +63,8 @@ const AddingNewItemModal = ({
           className="w-100"
           onClick={handleCreate}
           disabled={
-            currentSliceData.folders?.hasOwnProperty(inputValue) ||
-            currentSliceData.files.includes(inputValue)
+            currentSliceData?.folders?.hasOwnProperty(inputValue) ||
+            currentSliceData?.files.includes(inputValue)
           }
         >
           Create
@@ -71,8 +85,8 @@ const AddingNewItemModal = ({
         </Col>
         <Input
           status={
-            currentSliceData.folders?.hasOwnProperty(inputValue) ||
-            currentSliceData.files.includes(inputValue)
+            currentSliceData?.folders?.hasOwnProperty(inputValue) ||
+            currentSliceData?.files.includes(inputValue)
               ? "error"
               : null
           }

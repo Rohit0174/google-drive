@@ -11,18 +11,18 @@ import EditNameModal from "./editNameModal";
 const ContextMenuSection = ({
   left,
   top,
-  dispatcher,
   selectedFolder,
   openEditModal,
   setEditModal,
   type,
 }) => {
   const { id, "*": lpath } = useParams();
+  const dispatcher = useDispatch();
 
   if (!left) return;
 
-  const handleActionButton = (type) => {
-    if (type === "edit") {
+  const handleActionButton = (clickType) => {
+    if (clickType === "edit") {
       setEditModal(true);
     } else {
       if (type === "folder")
