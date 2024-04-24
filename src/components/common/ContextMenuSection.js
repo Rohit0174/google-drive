@@ -1,12 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
-import {
-  deleteFile,
-  deleteFolderName,
-  editFoderName,
-} from "../../utils/currentFolderSlice";
+import { deleteFile, deleteFolderName } from "../../utils/currentFolderSlice";
 import { useParams } from "react-router-dom";
-import EditNameModal from "./editNameModal";
 
 const ContextMenuSection = ({
   left,

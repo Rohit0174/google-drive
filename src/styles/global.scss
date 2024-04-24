@@ -41,6 +41,15 @@
 .align-center{
     align-items: center;
 }
+.h-max{
+    height: max-content !important;
+}
+.add_icon_folders_files_div{
+    flex-wrap: wrap !important;;
+    .ant-image{
+        height: max-content !important;
+    }
+}
 .contextMenuMainContainer{
     position: absolute;
   

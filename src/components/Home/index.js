@@ -1,8 +1,8 @@
 import { useState } from "react";
 import AddingNewItemModal from "../common/addingNewItem";
-import { Image, message } from "antd";
+import { Image } from "antd";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { addFileItem, addFolderItem } from "../../utils/currentFolderSlice";
 import FileAndFolderCards from "./fileAndFolderCards";
 import { useParams } from "react-router-dom";
@@ -20,10 +20,6 @@ const Home = () => {
     setOpenCreateNewModal(true);
   };
 
-  //Check if lpath is empty or not
-  //if empty then pass the id
-  //else pass the lpath last route
-
   const handleAddItem = (value, name) => {
     if (value === "File") {
       dispatcher(addFileItem({ name, id, lpath }));
@@ -40,7 +36,7 @@ const Home = () => {
         setOpenCreateNewModal={setOpenCreateNewModal}
         onSubmit={handleAddItem}
       />
-      <div className="d-flex">
+      <div className="d-flex add_icon_folders_files_div">
         <FileAndFolderCards
           left={left}
           setLeft={setLeft}

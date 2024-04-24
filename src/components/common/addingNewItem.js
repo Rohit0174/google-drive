@@ -17,7 +17,6 @@ const AddingNewItemModal = ({
     id ? store.currentFolder.folders[id] : store.currentFolder
   );
   if (lpath) {
-    // Remove trailing slash if present
     const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
     const folderPath = trimmedPath.split("/");
 
@@ -25,7 +24,6 @@ const AddingNewItemModal = ({
       if (currentSliceData?.folders[folderName]) {
         currentSliceData = currentSliceData.folders[folderName];
       } else {
-        // If any folder in lpath doesn't exist, break the loop
         currentSliceData = null;
         break;
       }
@@ -40,6 +38,8 @@ const AddingNewItemModal = ({
 
   const handleCancel = () => {
     setOpenCreateNewModal(false);
+    setInputValue("");
+    setValue("File");
   };
   const handleInputChange = (e) => {
     setInputValue(e.target.value);
@@ -61,6 +61,7 @@ const AddingNewItemModal = ({
           className="w-100"
           onClick={handleCreate}
           disabled={
+            inputValue === "" ||
             currentSliceData?.folders?.hasOwnProperty(inputValue) ||
             currentSliceData?.files.includes(inputValue)
           }

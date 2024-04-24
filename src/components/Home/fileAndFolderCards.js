@@ -7,6 +7,7 @@ import EditNameModal from "../common/editNameModal.js";
 
 const FileAndFolderCards = ({ left, setLeft, top, setTop }) => {
   const { id, "*": lpath } = useParams();
+  const { pathname } = useLocation();
 
   const [openContextMenu, setOpenContextMenu] = useState(false);
   const [selectedFolder, setSelectedFolder] = useState("");
@@ -33,14 +34,20 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop }) => {
   currentSliceData = data ? data : currentSliceData;
 
   const navigate = useNavigate();
-
+  const hasTrailingSlash = pathname.endsWith("/");
+  console.log("pathname", pathname, hasTrailingSlash);
   const handleFolderClick = (item) => {
+    console.log("oooo", item, id, lpath);
     if (!id) navigate(`/${item}`);
     else {
       if (!lpath) {
         navigate(`/${id}/${item}`);
       } else {
-        navigate(`/${id}/${lpath}/${item}`);
+        if (hasTrailingSlash) {
+          navigate(`/${id}/${lpath}${item}`);
+        } else {
+          navigate(`/${id}/${lpath}/${item}`);
+        }
       }
     }
   };
@@ -53,7 +60,8 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop }) => {
     setOpenContextMenu(true);
   };
   return (
-    <div className="d-flex" onClick={() => setLeft(null)}>
+    <div className="d-flex">
+      <div style={{ width: "100wv" }} onClick={() => setLeft(null)} />
       <EditNameModal
         openEditModal={openEditModal}
         setEditModal={setEditModal}

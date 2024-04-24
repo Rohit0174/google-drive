@@ -30,7 +30,6 @@ const currentFolderSlice = createSlice({
           const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
             if (!currentFolder.folders[folderName]) {
-              // If the folder does not exist, create it
               currentFolder.folders[folderName] = {
                 ...initialState,
                 folders: {},
@@ -75,7 +74,7 @@ const currentFolderSlice = createSlice({
       }
     },
     deleteFile: (state, action) => {
-      const { id, lpath, oName, nName } = action.payload;
+      const { id, lpath, oName } = action.payload;
 
       if (!id) {
         const index = state.files.indexOf(oName);
@@ -109,24 +108,21 @@ const currentFolderSlice = createSlice({
           let currentFolder = state.folders[id].folders;
           //A
           const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
-          const folderPath = trimmedPath.split("/"); // Split the path to navigate through the nested folders
+          const folderPath = trimmedPath.split("/");
           //
           // V
           // HG
           // TF
           //Rohit
 
-          // Traverse through the folder hierarchy
           for (const folderName of folderPath) {
             if (!currentFolder[folderName]) {
-              // If the folder does not exist, create it
               currentFolder[folderName] = initialState;
             }
-            // Move to the next level of nested folders
+
             currentFolder = currentFolder[folderName].folders;
           }
 
-          // Add the new folder to the appropriate level
           currentFolder[name] = initialState;
         }
       }
@@ -147,7 +143,6 @@ const currentFolderSlice = createSlice({
           const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
           const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
-            // If the folder does not exist, create it
             currentFolder = currentFolder[folderName].folders;
           }
           currentFolder[nName] = currentFolder[oName];
@@ -169,7 +164,6 @@ const currentFolderSlice = createSlice({
           const trimmedPath = lpath.endsWith("/") ? lpath.slice(0, -1) : lpath;
           const folderPath = trimmedPath.split("/");
           for (const folderName of folderPath) {
-            // If the folder does not exist, create it
             currentFolder = currentFolder[folderName].folders;
           }
 
