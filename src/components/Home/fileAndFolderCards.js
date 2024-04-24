@@ -35,9 +35,8 @@ const FileAndFolderCards = ({ left, setLeft, top, setTop }) => {
 
   const navigate = useNavigate();
   const hasTrailingSlash = pathname.endsWith("/");
-  console.log("pathname", pathname, hasTrailingSlash);
+
   const handleFolderClick = (item) => {
-    console.log("oooo", item, id, lpath);
     if (!id) navigate(`/${item}`);
     else {
       if (!lpath) {
